@@ -10,159 +10,84 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
-
-:root {
-  --blue-deep:  #2B4A6F;
-  --blue-mid:   #3D6B9E;
-  --blue-soft:  #5B8CC4;
-  --blue-pale:  #D6E6F5;
-  --blue-frost: #EEF5FB;
-  --gold:       #C8A96E;
-  --gold-light: #E8CFA0;
-  --ink:        #1A2533;
-  --ink-soft:   #3D4F61;
-  --muted:      #7A90A4;
-  --white:      #FAFCFF;
-  --radius:     14px;
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-
-body {
-  background: #E8EEF4;
-  color: var(--ink);
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 300;
-  line-height: 1.7;
-  -webkit-font-smoothing: antialiased;
-}
-
-.hero {
-  position: relative;
-  background: var(--blue-deep);
-  padding: 72px 40px 56px;
-  overflow: hidden;
-  min-height: 320px;
-  display: flex;
-  align-items: flex-end;
-}
-.hero::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 90% 10%, rgba(93,140,196,.28) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 40% at 10% 90%, rgba(200,169,110,.12) 0%, transparent 55%);
-}
-.hero-noise {
-  position: absolute; inset: 0; opacity: .035;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 200px;
-}
-.hero-content { position: relative; z-index: 1; max-width: 700px; }
-.hero-label { font-size: 10px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 14px; animation: fadeUp .5s .1s both; }
-h1 { font-family: 'Fraunces', serif; font-weight: 300; font-size: clamp(44px, 8vw, 84px); line-height: 1; color: var(--white); letter-spacing: -.02em; margin-bottom: 16px; animation: fadeUp .6s .2s both; }
-h1 em { font-style: italic; color: var(--gold-light); }
-.hero-sub { font-size: 15px; color: rgba(214,230,245,.85); font-weight: 300; animation: fadeUp .6s .3s both; margin-bottom: 4px; }
-.hero-sub2 { font-size: 12px; color: rgba(214,230,245,.55); letter-spacing: .06em; animation: fadeUp .6s .38s both; }
-.hero-contact { position: absolute; top: 40px; right: 40px; z-index: 2; text-align: right; animation: fadeIn .8s .5s both; }
-.hero-contact a { display: block; color: var(--blue-pale); text-decoration: none; font-size: 14px; font-weight: 400; margin-bottom: 4px; transition: color .2s; }
-.hero-contact a:hover { color: var(--gold-light); }
-.hero-location { font-size: 11px; color: rgba(214,230,245,.5); display: block; }
-
-.body-wrap { max-width: 860px; margin: 0 auto; padding: 32px 20px 64px; display: flex; flex-direction: column; gap: 16px; }
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-.card { background: var(--white); border-radius: var(--radius); padding: 28px 28px 24px; box-shadow: 0 1px 3px rgba(27,46,70,.06), 0 4px 16px rgba(27,46,70,.05); }
-.section-title { font-size: 9.5px; font-weight: 500; letter-spacing: .24em; text-transform: uppercase; color: var(--blue-soft); margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1.5px solid var(--blue-pale); }
-.about-text { font-size: 14.5px; color: var(--ink-soft); line-height: 1.8; }
-
-.entry { border-bottom: 1px solid var(--blue-frost); }
-.entry:last-child { border-bottom: none; }
-.entry-header { width: 100%; background: none; border: none; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 14px 0; text-align: left; }
-.entry-header-left { flex: 1; min-width: 0; }
-.entry-title { display: block; font-family: 'Fraunces', serif; font-weight: 400; font-size: 15.5px; color: var(--ink); line-height: 1.3; margin-bottom: 3px; }
-.entry-org { display: block; font-size: 12px; color: var(--blue-mid); font-style: italic; line-height: 1.4; }
-.entry-header-right { flex-shrink: 0; text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; padding-top: 2px; }
-.entry-period { font-size: 11px; color: var(--muted); white-space: nowrap; }
-.entry-chevron { font-size: 9px; color: var(--blue-soft); }
-
-.entry-body { max-height: 0; overflow: hidden; transition: max-height .35s ease, opacity .3s ease; opacity: 0; }
-.entry-body.expanded { max-height: 500px; opacity: 1; }
-.entry-body ul { list-style: none; padding: 0 0 14px 0; }
-.entry-body ul li { font-size: 13.5px; color: var(--ink-soft); padding: 3px 0 3px 18px; position: relative; line-height: 1.55; }
-.entry-body ul li::before { content: '▸'; position: absolute; left: 0; color: var(--gold); font-size: 10px; top: 5px; }
-
-.skills-grid { display: flex; flex-wrap: wrap; gap: 8px; }
-.skill-pill { background: var(--blue-frost); color: var(--blue-deep); font-size: 12px; padding: 5px 13px; border-radius: 20px; border: 1px solid var(--blue-pale); }
-
-.cert-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--blue-frost); }
-.cert-item:last-child { border-bottom: none; }
-.cert-icon { width: 32px; height: 32px; background: var(--blue-pale); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
-.cert-title { font-size: 13px; font-weight: 500; color: var(--ink); }
-.cert-org { font-size: 11px; color: var(--muted); }
-
-.hobbies-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 16px; }
-.hobby-item { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 13px; color: var(--ink-soft); border-bottom: 1px solid var(--blue-frost); }
-.hobby-icon { font-size: 15px; width: 20px; text-align: center; flex-shrink: 0; }
-
-.ref-text { font-size: 13px; color: var(--muted); font-style: italic; line-height: 1.6; }
-
-.qr-card { background: var(--blue-deep); text-align: center; }
-.qr-label { font-size: 9.5px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 16px; }
-.qr-wrap { display: flex; justify-content: center; margin-bottom: 14px; }
-.qr-url { font-size: 11px; color: rgba(214,230,245,.55); word-break: break-all; }
-
-.footer { background: var(--ink); padding: 24px 40px; text-align: center; font-size: 12px; color: var(--muted); letter-spacing: .04em; }
-
-.reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
-.reveal.visible { opacity: 1; transform: translateY(0); }
-
-@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-@media (max-width: 640px) {
-  .hero { padding: 24px 20px 36px; min-height: unset; flex-direction: column; align-items: flex-start; }
-  .hero-contact { position: static; text-align: left; margin-bottom: 24px; animation: none; opacity: 1; }
-  .body-wrap { padding: 16px 12px 48px; gap: 12px; }
-  .two-col { grid-template-columns: 1fr; }
-  .card { padding: 20px 16px 18px; }
-  .hobbies-grid { grid-template-columns: 1fr; }
-  .entry-title { font-size: 14px; }
-  .footer { padding: 20px 24px; }
-}
+:root{--blue-deep:#2B4A6F;--blue-mid:#3D6B9E;--blue-soft:#5B8CC4;--blue-pale:#D6E6F5;--blue-frost:#EEF5FB;--gold:#C8A96E;--gold-light:#E8CFA0;--ink:#1A2533;--ink-soft:#3D4F61;--muted:#7A90A4;--white:#FAFCFF;--radius:14px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#E8EEF4;color:var(--ink);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased}
+.hero{position:relative;background:var(--blue-deep);padding:72px 40px 56px;overflow:hidden;min-height:320px;display:flex;align-items:flex-end}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 90% 10%,rgba(93,140,196,.28) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 10% 90%,rgba(200,169,110,.12) 0%,transparent 55%)}
+.hero-noise{position:absolute;inset:0;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px}
+.hero-content{position:relative;z-index:1;max-width:700px}
+.hero-label{font-size:10px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-light);margin-bottom:14px;animation:fadeUp .5s .1s both}
+h1{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(44px,8vw,84px);line-height:1;color:var(--white);letter-spacing:-.02em;margin-bottom:16px;animation:fadeUp .6s .2s both}
+h1 em{font-style:italic;color:var(--gold-light)}
+.hero-sub{font-size:15px;color:rgba(214,230,245,.85);font-weight:300;animation:fadeUp .6s .3s both;margin-bottom:4px}
+.hero-sub2{font-size:12px;color:rgba(214,230,245,.55);letter-spacing:.06em;animation:fadeUp .6s .38s both}
+.hero-contact{position:absolute;top:40px;right:40px;z-index:2;text-align:right;animation:fadeIn .8s .5s both}
+.hero-contact a{display:block;color:var(--blue-pale);text-decoration:none;font-size:14px;font-weight:400;margin-bottom:4px;transition:color .2s}
+.hero-contact a:hover{color:var(--gold-light)}
+.hero-location{font-size:11px;color:rgba(214,230,245,.5);display:block}
+.body-wrap{max-width:860px;margin:0 auto;padding:32px 20px 64px;display:flex;flex-direction:column;gap:16px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:var(--white);border-radius:var(--radius);padding:28px 28px 24px;box-shadow:0 1px 3px rgba(27,46,70,.06),0 4px 16px rgba(27,46,70,.05)}
+.section-title{font-size:9.5px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--blue-soft);margin-bottom:20px;padding-bottom:10px;border-bottom:1.5px solid var(--blue-pale)}
+.about-text{font-size:14.5px;color:var(--ink-soft);line-height:1.8}
+.entry{border-bottom:1px solid var(--blue-frost)}
+.entry:last-child{border-bottom:none}
+.entry-header{width:100%;background:none;border:none;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:14px 0;text-align:left}
+.entry-header-left{flex:1;min-width:0}
+.entry-title{display:block;font-family:'Fraunces',serif;font-weight:400;font-size:15.5px;color:var(--ink);line-height:1.3;margin-bottom:3px}
+.entry-org{display:block;font-size:12px;color:var(--blue-mid);font-style:italic;line-height:1.4}
+.entry-header-right{flex-shrink:0;text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:4px;padding-top:2px}
+.entry-period{font-size:11px;color:var(--muted);white-space:nowrap}
+.entry-chevron{font-size:9px;color:var(--blue-soft)}
+.entry-body{max-height:0;overflow:hidden;transition:max-height .35s ease,opacity .3s ease;opacity:0}
+.entry-body.expanded{max-height:500px;opacity:1}
+.entry-body ul{list-style:none;padding:0 0 14px 0}
+.entry-body ul li{font-size:13.5px;color:var(--ink-soft);padding:3px 0 3px 18px;position:relative;line-height:1.55}
+.entry-body ul li::before{content:'▸';position:absolute;left:0;color:var(--gold);font-size:10px;top:5px}
+.skills-grid{display:flex;flex-wrap:wrap;gap:8px}
+.skill-pill{background:var(--blue-frost);color:var(--blue-deep);font-size:12px;padding:5px 13px;border-radius:20px;border:1px solid var(--blue-pale)}
+.cert-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--blue-frost)}
+.cert-item:last-child{border-bottom:none}
+.cert-icon{width:32px;height:32px;background:var(--blue-pale);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.cert-title{font-size:13px;font-weight:500;color:var(--ink)}
+.cert-org{font-size:11px;color:var(--muted)}
+.hobbies-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px}
+.hobby-item{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:13px;color:var(--ink-soft);border-bottom:1px solid var(--blue-frost)}
+.hobby-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0}
+.ref-text{font-size:13px;color:var(--muted);font-style:italic;line-height:1.6}
+.qr-card{background:var(--blue-deep);text-align:center}
+.qr-label{font-size:9.5px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-light);margin-bottom:16px}
+.qr-wrap{display:flex;justify-content:center;margin-bottom:14px}
+.qr-url{font-size:11px;color:rgba(214,230,245,.55);word-break:break-all}
+.footer{background:var(--ink);padding:24px 40px;text-align:center;font-size:12px;color:var(--muted);letter-spacing:.04em}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@media(max-width:640px){.hero{padding:24px 20px 36px;min-height:unset;flex-direction:column;align-items:flex-start}.hero-contact{position:static;text-align:left;margin-bottom:24px;animation:none;opacity:1}.body-wrap{padding:16px 12px 48px;gap:12px}.two-col{grid-template-columns:1fr}.card{padding:20px 16px 18px}.hobbies-grid{grid-template-columns:1fr}.entry-title{font-size:14px}.footer{padding:20px 24px}}
 </style>
 </head>
 <body>
 <div id="root"></div>
 <script>
-const { useState, useEffect, useRef, createElement: h, Fragment } = React;
-
-const profile = {
-  name: "Markus Johansen",
-  tagline: "Engasjert og serviceinnstilt ungdom",
-  subtitle: "Instruktør · Menneskekjenner · Kreativ bidragsyter",
-  phone: "465 00 803",
-  location: "Jonsvannet, Trondheim",
-  year: "Sommerjobb 2026",
-  about: "Jeg er en engasjert og serviceinnstilt ungdom som trives best når jeg kan hjelpe, instruere og skape god stemning rundt meg. Jeg har erfaring med å jobbe tett på mennesker — både barn, unge og eldre — og har blant annet utviklet og ledet treningsopplegg for grupper. Jeg er empatisk og sosial, lærer raskt og er ikke redd for å ta ansvar. Jeg ønsker å bruke sommeren til å bygge bredde i min arbeidserfaring og er åpen for en rekke bransjer.",
-};
-
-const experience = [
-  { title: "Praksis – Livsglede, aktivitet & oppvekst", org: "Persaunet bo og velferdssenter – Livsgledetur og aktivitetssenter", period: "Høst 2024", duration: "8 uker", bullets: ["Planla og gjennomførte aktiviteter og turer — kreativ og selvstendig tilnærming","Bygget raskt tillit og gode relasjoner med både brukere og kolleger","Opplevde dette som å komme hjem — trivdes svært godt i miljøet"] },
-  { title: "Praksis – Barn og pedagogikk", org: "Charlottenlund barneskole", period: "Vår 2025", duration: "9 uker", bullets: ["Jobbet tett på elever i skolehverdagen — tilpasset kommunikasjon etter alder og behov","Trives svært godt med barn og oppdaget en naturlig evne til å engasjere og motivere","Rollen som støttende voksen og rollemodell faller naturlig"] },
-  { title: "Sommerjobb – Ung Jobb-programmet", org: "Dragvoll Helse og Velferdssenter, Trondheim Kommune", period: "Sommer 2024", duration: "8 uker", bullets: ["Gjennomførte aktiviteter og daglige opplegg — planlegging og gjennomføring i praksis","Skapte trivsel og fellesskap gjennom musikk og sang","Samarbeidet strukturert med et faglig team og lærte raskt nye rutiner"] },
-  { title: "Praksis – Trening, rehabilitering & instruksjon", org: "Lian Rehabiliteringssenter", period: "Nov–des 2025", duration: "", bullets: ["Utviklet og ledet individuelle treningsopplegg — planlegging, motivasjon og instruksjon","Fikk gode tilbakemeldinger på evnen til å formidle øvelser trygt og engasjerende","Trives særlig godt med instruktørrollen — å se andre mestre noe nytt er veldig givende"] },
-  { title: "Praksis – Helse og omsorg", org: "Persaunet Helse og Omsorgssenter", period: "2026", duration: "8 uker · pågående", bullets: ["Planlegger og gjennomfører daglige aktiviteter — strukturert og selvstendig","Bygger relasjoner raskt med nye mennesker, skaper god stemning og tillit","Bidrar med kreative innslag: musikk, sang og skapende aktiviteter"] },
+const{useState,useEffect,useRef,createElement:h,Fragment}=React;
+const profile={name:"Markus Johansen",tagline:"Engasjert og serviceinnstilt ungdom",subtitle:"Instruktør · Menneskekjenner · Kreativ bidragsyter",phone:"465 00 803",location:"Jonsvannet, Trondheim",year:"Sommerjobb 2026",about:"Jeg er en engasjert og serviceinnstilt ungdom som trives best når jeg kan hjelpe, instruere og skape god stemning rundt meg. Jeg har erfaring med å jobbe tett på mennesker — både barn, unge og eldre — og har blant annet utviklet og ledet treningsopplegg for grupper. Jeg er empatisk og sosial, lærer raskt og er ikke redd for å ta ansvar. Jeg ønsker å bruke sommeren til å bygge bredde i min arbeidserfaring og er åpen for en rekke bransjer."};
+const experience=[
+{title:"Praksis – Livsglede, aktivitet & oppvekst",org:"Persaunet bo og velferdssenter – Livsgledetur og aktivitetssenter",period:"Høst 2024",duration:"8 uker",bullets:["Planla og gjennomførte aktiviteter og turer — kreativ og selvstendig tilnærming","Bygget raskt tillit og gode relasjoner med både brukere og kolleger","Opplevde dette som å komme hjem — trivdes svært godt i miljøet"]},
+{title:"Praksis – Barn og pedagogikk",org:"Charlottenlund barneskole",period:"Vår 2025",duration:"9 uker",bullets:["Jobbet tett på elever i skolehverdagen — tilpasset kommunikasjon etter alder og behov","Trives svært godt med barn og oppdaget en naturlig evne til å engasjere og motivere","Rollen som støttende voksen og rollemodell faller naturlig"]},
+{title:"Sommerjobb – Ung Jobb-programmet",org:"Dragvoll Helse og Velferdssenter, Trondheim Kommune",period:"Sommer 2025",duration:"8 uker",bullets:["Gjennomførte aktiviteter og daglige opplegg — planlegging og gjennomføring i praksis","Skapte trivsel og fellesskap gjennom musikk og sang","Samarbeidet strukturert med et faglig team og lærte raskt nye rutiner"]},
+{title:"Praksis – Trening, rehabilitering & instruksjon",org:"Lian Rehabiliteringssenter",period:"Nov–des 2025",duration:"",bullets:["Utviklet og ledet individuelle treningsopplegg — planlegging, motivasjon og instruksjon","Fikk gode tilbakemeldinger på evnen til å formidle øvelser trygt og engasjerende","Trives særlig godt med instruktørrollen — å se andre mestre noe nytt er veldig givende"]},
+{title:"Praksis – Helse og omsorg",org:"Persaunet Helse og Omsorgssenter",period:"2026",duration:"8 uker · pågående",bullets:["Planlegger og gjennomfører daglige aktiviteter — strukturert og selvstendig","Bygger relasjoner raskt med nye mennesker, skaper god stemning og tillit","Bidrar med kreative innslag: musikk, sang og skapende aktiviteter"]}
 ];
-const education = [
-  { title: "Vg2 – Helse og oppvekstfag", org: "Strinda videregående skole", period: "2024–2026", bullets: ["Fordypning i helsefag, omsorg og pedagogikk","Teori og praksis kombinert gjennom utplasseringsordning"] },
-  { title: "Vg1 – Helse og oppvekstfag", org: "Strinda videregående skole", period: "2023–2024", bullets: [] },
+const education=[
+{title:"Vg2 – Helse og oppvekstfag",org:"Strinda videregående skole",period:"2024–2026",bullets:["Fordypning i helsefag, omsorg og pedagogikk","Teori og praksis kombinert gjennom utplasseringsordning"]},
+{title:"Vg1 – Helse og oppvekstfag",org:"Strinda videregående skole",period:"2023–2024",bullets:[]}
 ];
-const skills = ["Empatisk","Omsorgsfull","Serviceinnstilt","Instruktør","Motivator","Kreativ","Sosial og trygg","Pålitelig","Treningsfokus"];
-const certs = [{icon:"🚑",title:"Førstehjelpskurs",org:"Strinda vgs."},{icon:"⛵",title:"Livreddingskurs",org:"Redningsskøyten"}];
-const hobbies = [{icon:"🏋️",label:"Trening & styrke"},{icon:"🎹",label:"Piano & sang"},{icon:"🌲",label:"Friluftsliv & natur"},{icon:"🎣",label:"Fiske"},{icon:"🎨",label:"Tegning & kreativt arbeid"},{icon:"🪵",label:"Treverk & strikking"},{icon:"🐾",label:"Dyr (katter & hund)"}];
-
+const skills=["Empatisk","Omsorgsfull","Serviceinnstilt","Instruktør","Motivator","Kreativ","Sosial og trygg","Pålitelig","Treningsfokus"];
+const certs=[{icon:"🚑",title:"Førstehjelpskurs",org:"Strinda vgs."},{icon:"⛵",title:"Livreddingskurs",org:"Redningsskøyten"}];
+const hobbies=[{icon:"🏋️",label:"Trening & styrke"},{icon:"🎹",label:"Piano & sang"},{icon:"🌲",label:"Friluftsliv & natur"},{icon:"🎣",label:"Fiske"},{icon:"🎨",label:"Kreativt arbeid"}];
 function useReveal(){const ref=useRef(null);const[visible,setVisible]=useState(false);useEffect(()=>{const obs=new IntersectionObserver(([e])=>{if(e.isIntersecting)setVisible(true)},{threshold:0.08});if(ref.current)obs.observe(ref.current);return()=>obs.disconnect();},[]);return[ref,visible];}
 function Reveal({children,delay=0}){const[ref,visible]=useReveal();return h('div',{ref,className:`reveal ${visible?'visible':''}`,style:{transitionDelay:`${delay}ms`}},children);}
 function SectionTitle({children}){return h('p',{className:'section-title'},children);}
